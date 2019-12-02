@@ -1,7 +1,8 @@
-import { GET_POSTS } from "../actions/types";
+import { GET_POSTS, GET_POST, SET_POST_NULL } from "../actions/types";
 
 const initialState = {
   posts: [],
+  currentPost: {},
   loading: false
 };
 
@@ -11,6 +12,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+        loading: false
+      };
+    case GET_POST:
+      return {
+        ...state,
+        currentPost: action.payload,
+        loading: false
+      };
+    case SET_POST_NULL:
+      return {
+        ...state,
+        currentPost: {},
         loading: false
       };
     default:

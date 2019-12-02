@@ -15,3 +15,5 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 //POSTS
 export const GET_POSTS = "GET_POSTS";
+export const GET_POST = "GET_POST";
+export const SET_POST_NULL = "SET_POST_NULL";

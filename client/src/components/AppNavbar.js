@@ -65,15 +65,13 @@ class AppNavar extends Component {
             <NavbarToggler onClick={this.toggle} />
             <Nav>
               <NavItem>
-                <Link to="/api/posts">
-                  <NavLink>Posts</NavLink>
-                </Link>
+                <NavLink tag={Link} to="/api/posts">
+                  Posts
+                </NavLink>
               </NavItem>
-              <NavItem>
-                <Link to="/api/items">
-                  <NavLink>Items</NavLink>
-                </Link>
-              </NavItem>
+              <NavLink tag={Link} to="/api/items">
+                Items
+              </NavLink>
             </Nav>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto">

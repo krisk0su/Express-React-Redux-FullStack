@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AppNavbar from "./components/AppNavbar";
 import ShoppingList from "./components/ShoppingList";
 import PostList from "./components/Posts/PostList";
+import PostDetails from "./components/Posts/PostDetails";
 import { Container } from "reactstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -25,6 +26,7 @@ class App extends Component {
             <Container>
               <Switch>
                 <Route path="/api/posts" exact component={PostList} />
+                <Route path="/api/posts/:id" component={PostDetails} />
                 <Route path="/api/items" exact component={ShoppingList} />
               </Switch>
             </Container>

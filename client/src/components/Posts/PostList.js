@@ -1,27 +1,51 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getPosts } from "../../actions/postAction";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { getPosts, setPostToNull } from "../../actions/postAction";
+import {
+  Container,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  CardTitle,
+  CardText,
+  Card,
+  Row,
+  Col
+} from "reactstrap";
 import PropTypes from "prop-types";
+
 class PostList extends Component {
+  static propTypes = {
+    getPosts: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired
+  };
   componentDidMount() {
+    this.props.setPostToNull();
     this.props.getPosts();
   }
+  renderPosts() {
+    return this.props.post.posts.map(pst => {
+      const { title, description, _id } = pst;
+
+      return (
+        <Col sm="6" className="mb-5" key={_id}>
+          <Card>
+            <CardTitle className="text-center">{title}</CardTitle>
+            <CardText className="text-center">{description}</CardText>
+            <Button tag={Link} to={`/api/posts/${_id}`}>
+              Read More
+            </Button>
+          </Card>
+        </Col>
+      );
+    });
+  }
+
   render() {
-    const { posts } = this.props.post;
     return (
       <Container>
-        <ListGroup>
-          <TransitionGroup className="shopping-list">
-            {posts.map(({ _id, title }) => (
-              <CSSTransition key={_id} timeout={500} classNames="fade">
-                <ListGroupItem>{title}</ListGroupItem>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </ListGroup>
+        <Row>{this.renderPosts()}</Row>
       </Container>
     );
   }
@@ -30,4 +54,4 @@ class PostList extends Component {
 const mapsStateToProps = state => ({
   post: state.post
 });
-export default connect(mapsStateToProps, { getPosts })(PostList);
+export default connect(mapsStateToProps, { getPosts, setPostToNull })(PostList);
