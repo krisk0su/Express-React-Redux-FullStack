@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GET_ITEMS, ADD_ITEM, DELETE_ITEM, ITEMS_LOADING } from "./types";
+import {
+  GET_ITEMS,
+  ADD_ITEM,
+  DELETE_ITEM,
+  ITEMS_LOADING,
+  GET_CREATOR
+} from "./types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
 

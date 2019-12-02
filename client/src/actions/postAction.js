@@ -1,5 +1,10 @@
 import axios from "axios";
-import { GET_POSTS, GET_POST, SET_POST_NULL } from "./types";
+import {
+  GET_POSTS,
+  GET_POST,
+  SET_POST_NULL,
+  GET_CREATOR
+} from "../actions/types";
 import { returnErrors } from "./errorAction";
 
 export const getPosts = () => dispatch => {
@@ -25,10 +30,26 @@ export const getPost = id => dispatch => {
         payload: res.data
       })
     )
+    .then(res =>
+      axios.get(`/api/users/${res.payload.creator}`).then(ress =>
+        dispatch({
+          type: GET_CREATOR,
+          payload: ress.data
+        })
+      )
+    )
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
+// export const getCreator = id => dispatch => {
+//   axios.get(`/api/users/${id}`).then(res =>
+//     dispatch({
+//       type: GET_CREATOR,
+//       payload: res.data
+//     })
+//   );
+// };
 
 export const setPostToNull = () => dispatch => {
   dispatch({ type: SET_POST_NULL });

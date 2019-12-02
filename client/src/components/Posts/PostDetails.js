@@ -15,7 +15,6 @@ class PostDetails extends Component {
 
   render() {
     const { id } = this.state;
-    console.log(this.props.currentPost);
     return <div>Hello from post {id}</div>;
   }
 }

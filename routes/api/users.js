@@ -59,6 +59,14 @@ router.post("/", (req, res) => {
     });
   });
 });
+// @router GET api/users:id
+// GET USERNAME BY ID
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  User.findById(id)
+    .select("username -_id")
+    .then(user => res.json(user));
+});
 // @route GET api/users
 // GET ALL USERS
 router.get("/", (req, res) => {
