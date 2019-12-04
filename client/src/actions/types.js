@@ -13,9 +13,9 @@ export const REGISTER_FAIL = "REGISTER_FAIL";
 export const GET_ERRORS = "GET_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
-//USERS - CREATORS
-export const GET_CREATOR = "GET_CREATOR";
 //POSTS
+export const GET_CREATOR = "GET_CREATOR";
 export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
 export const SET_POST_NULL = "SET_POST_NULL";
+export const LIKE_POST = "LIKE_POST";

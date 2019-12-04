@@ -41,4 +41,27 @@ router.delete("/:id", authWare, (req, res) => {
     .then(post => post.remove().then(() => res.json({ success: true })))
     .catch(err => res.statusCode(404).json({ success: false }));
 });
+
+// @route POST api/posts/like/:id
+// LIKE POST
+// @access Private
+router.post("/like/", (req, res) => {
+  const { postId, userId } = req.body;
+
+  Post.findById(postId).then(post => {
+    let hasLiked = post.fans.some(fan => fan == userId);
+
+    try {
+      if (hasLiked) {
+        throw new Error("You aleady liked this post.");
+      } else {
+        post.fans.push(userId);
+        post.save().then(post => res.json(post));
+      }
+    } catch (err) {
+      res.statusCode = 404;
+      res.json({ msg: err.message });
+    }
+  });
+});
 module.exports = router;
