@@ -4,7 +4,8 @@ import {
   GET_POST,
   SET_POST_NULL,
   GET_CREATOR,
-  LIKE_POST
+  LIKE_POST,
+  DELETE_POST
 } from "../actions/types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
@@ -22,7 +23,18 @@ export const getPosts = () => dispatch => {
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-
+//sending history object from component and firing it after dispatching the delete_post reducer
+export const deletePost = (id, history) => dispatch => {
+  axios
+    .delete(`/api/posts/${id}`)
+    .then(res =>
+      dispatch({
+        type: DELETE_POST,
+        payload: id
+      })
+    )
+    .then(res => history.push("/api/posts"));
+};
 export const getPost = id => dispatch => {
   axios
     .get(`/api/posts/${id}`)

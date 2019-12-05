@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPost, likePost } from "../../actions/postAction";
-import { Button, ButtonGroup, Alert } from "reactstrap";
+import { getPost, likePost, deletePost } from "../../actions/postAction";
 import { clearErrors } from "../../actions/errorAction";
+import { Button, ButtonGroup, Alert } from "reactstrap";
+
 class PostDetails extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,7 @@ class PostDetails extends Component {
   componentDidMount() {
     this.props.clearErrors();
     this.props.getPost(this.state.id);
+    console.log(this.props);
   }
   componentDidUpdate(prevProps) {
     const { error } = this.props;
@@ -56,7 +58,8 @@ class PostDetails extends Component {
     }
   };
   deletePost = () => {
-    console.log("delete");
+    const { _id } = this.props.currentPost;
+    this.props.deletePost(_id, this.props.history);
   };
   editPost = () => {
     console.log("editing");
@@ -89,6 +92,9 @@ const mapsStateToProps = state => ({
   auth: state.auth,
   error: state.error
 });
-export default connect(mapsStateToProps, { getPost, likePost, clearErrors })(
-  PostDetails
-);
+export default connect(mapsStateToProps, {
+  getPost,
+  likePost,
+  deletePost,
+  clearErrors
+})(PostDetails);

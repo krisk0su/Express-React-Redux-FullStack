@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
 // @route POST api/posts
 // DELETE POST
 // @access Private
-router.delete("/:id", authWare, (req, res) => {
+router.delete("/:id", (req, res) => {
   Post.findById(req.params.id)
     .then(post => post.remove().then(() => res.json({ success: true })))
     .catch(err => res.statusCode(404).json({ success: false }));

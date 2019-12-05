@@ -19,3 +19,4 @@ export const GET_POSTS = "GET_POSTS";
 export const GET_POST = "GET_POST";
 export const SET_POST_NULL = "SET_POST_NULL";
 export const LIKE_POST = "LIKE_POST";
+export const DELETE_POST = "DELETE_POST";

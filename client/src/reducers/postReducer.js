@@ -3,7 +3,8 @@ import {
   GET_POST,
   SET_POST_NULL,
   GET_CREATOR,
-  LIKE_POST
+  LIKE_POST,
+  DELETE_POST
 } from "../actions/types";
 
 const initialState = {
@@ -26,6 +27,13 @@ export default function(state = initialState, action) {
         currentPost: { ...action.payload },
         loading: false
       };
+    case DELETE_POST: {
+      return {
+        ...state,
+        posts: state.posts.filter(post => post._id !== action.payload.id),
+        loading: false
+      };
+    }
     case SET_POST_NULL:
       return {
         ...state,
