@@ -1,37 +1,39 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getPost, likePost } from "../../actions/postAction";
-
-import { Button, ButtonGroup } from "reactstrap";
+import { Button, ButtonGroup, Alert } from "reactstrap";
+import { clearErrors } from "../../actions/errorAction";
 class PostDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: this.props.match.params.id,
-      likedCss: "m-3 button button-like"
+      likedCss: "m-3 button button-like",
+      msg: null
     };
   }
   componentDidMount() {
+    this.props.clearErrors();
     this.props.getPost(this.state.id);
   }
-  renderLike() {
-    const { isAuthenticated } = this.props.auth;
-    if (isAuthenticated) {
-      return (
-        <button onClick={this.PostLike} className={this.state.likedCss}>
-          <i className="fa fa-heart"></i>
-          <span>Like</span>
-        </button>
-      );
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+    if (error != prevProps.error) {
+      if (error.id && error.id === "LIKE_FAILED") {
+        this.setState({ msg: error.msg });
+      } else {
+        this.setState({ msg: null });
+      }
     }
   }
+
   PostLike = e => {
-    this.setState({ likedCss: "m-3 button button-like liked" });
     let post = {
       postId: this.props.currentPost._id,
       userId: this.props.auth.user._id
     };
     this.props.likePost(post);
+    this.setState({ likedCss: "m-3 button button-like liked" });
   };
   renderButtons = () => {
     if (this.props.auth.user !== null) {
@@ -59,26 +61,34 @@ class PostDetails extends Component {
   editPost = () => {
     console.log("editing");
   };
+  render() {
+    const { title, description, username, likes } = this.props.currentPost;
+    const { isAuthenticated } = this.props.auth;
 
-  renderPost() {
-    const { title, description, username } = this.props.currentPost;
     return (
-      <div className="render-post">
+      <div>
+        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
         <h1>Title: {title}</h1>
         <p>{description}</p>
         <h3>Author: {username}</h3>
-        {this.renderLike()}
+        <h2>Likes: {likes}</h2>
+        {isAuthenticated ? (
+          <button onClick={this.PostLike} className={this.state.likedCss}>
+            <i className="fa fa-heart"></i>
+            <span>Like</span>
+          </button>
+        ) : null}
         {this.renderButtons()}
       </div>
     );
-  }
-  render() {
-    return <div>{this.renderPost()}</div>;
   }
 }
 
 const mapsStateToProps = state => ({
   currentPost: state.post.currentPost,
-  auth: state.auth
+  auth: state.auth,
+  error: state.error
 });
-export default connect(mapsStateToProps, { getPost, likePost })(PostDetails);
+export default connect(mapsStateToProps, { getPost, likePost, clearErrors })(
+  PostDetails
+);

@@ -20,10 +20,14 @@ const PostSchema = new Schema({
   },
   fans: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     }
-  ]
+  ],
+  likes: {
+    type: mongoose.Schema.Types.Number,
+    default: 0
+  }
 });
 
 //   var storySchema = Schema({

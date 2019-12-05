@@ -23,7 +23,7 @@ export default function(state = initialState, action) {
     case GET_POST:
       return {
         ...state,
-        currentPost: action.payload,
+        currentPost: { ...action.payload },
         loading: false
       };
     case SET_POST_NULL:
@@ -41,7 +41,7 @@ export default function(state = initialState, action) {
     case LIKE_POST:
       return {
         ...state,
-        currentPost: { ...state.currentPost, ...action.payload.fans },
+        currentPost: { ...action.payload },
         loading: false
       };
     default:

@@ -55,7 +55,9 @@ export const likePost = post => (dispatch, getState) => {
       })
     )
     .catch(err =>
-      dispatch(returnErrors(err.response.data, err.response.status))
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "LIKE_FAILED")
+      )
     );
 };
 

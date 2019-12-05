@@ -23,7 +23,7 @@ router.get("/:id", (req, res) => {
 // @route POST api/posts
 // Create POST
 // @access Private
-router.post("/", authWare, (req, res) => {
+router.post("/", (req, res) => {
   const newPost = new Post({
     title: req.body.title,
     description: req.body.description,
@@ -56,6 +56,7 @@ router.post("/like/", (req, res) => {
         throw new Error("You aleady liked this post.");
       } else {
         post.fans.push(userId);
+        post.likes += 1;
         post.save().then(post => res.json(post));
       }
     } catch (err) {
