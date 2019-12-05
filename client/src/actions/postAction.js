@@ -5,7 +5,8 @@ import {
   SET_POST_NULL,
   GET_CREATOR,
   LIKE_POST,
-  DELETE_POST
+  DELETE_POST,
+  EDIT_POST
 } from "../actions/types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
@@ -57,6 +58,14 @@ export const getPost = id => dispatch => {
     );
 };
 
+export const editPost = post => (dispatch, getState) => {
+  axios.patch("/api/posts", post).then(res =>
+    dispatch({
+      type: EDIT_POST,
+      payload: res.data
+    })
+  );
+};
 export const likePost = post => (dispatch, getState) => {
   axios
     .post("/api/posts/like", post)

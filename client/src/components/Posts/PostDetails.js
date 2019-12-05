@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { getPost, likePost, deletePost } from "../../actions/postAction";
 import { clearErrors } from "../../actions/errorAction";
 import { Button, ButtonGroup, Alert } from "reactstrap";
+import EditPostModal from "./EditPostModal";
 
 class PostDetails extends Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class PostDetails extends Component {
   componentDidMount() {
     this.props.clearErrors();
     this.props.getPost(this.state.id);
-    console.log(this.props);
   }
   componentDidUpdate(prevProps) {
     const { error } = this.props;
@@ -37,7 +37,7 @@ class PostDetails extends Component {
     this.props.likePost(post);
     this.setState({ likedCss: "m-3 button button-like liked" });
   };
-  renderButtons = () => {
+  renderDelete = () => {
     if (this.props.auth.user !== null) {
       const { user } = this.props.auth;
       const creatorId = this.props.currentPost.creator;
@@ -46,9 +46,6 @@ class PostDetails extends Component {
       if (user.id === creatorId || user._id === creatorId) {
         return (
           <div>
-            <Button onClick={this.editPost} className="m-2" color="primary">
-              Edit
-            </Button>
             <Button onClick={this.deletePost} className="m-2" color="danger">
               Delete
             </Button>
@@ -63,6 +60,12 @@ class PostDetails extends Component {
   };
   editPost = () => {
     console.log("editing");
+  };
+  renderLike = username => {
+    const { user } = this.props.auth;
+    if (user && user.username === username) {
+      return <EditPostModal />;
+    }
   };
   render() {
     const { title, description, username, likes } = this.props.currentPost;
@@ -81,7 +84,8 @@ class PostDetails extends Component {
             <span>Like</span>
           </button>
         ) : null}
-        {this.renderButtons()}
+        {this.renderLike(username)}
+        {this.renderDelete()}
       </div>
     );
   }

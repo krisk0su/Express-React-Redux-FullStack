@@ -4,7 +4,8 @@ import {
   SET_POST_NULL,
   GET_CREATOR,
   LIKE_POST,
-  DELETE_POST
+  DELETE_POST,
+  EDIT_POST
 } from "../actions/types";
 
 const initialState = {
@@ -22,6 +23,7 @@ export default function(state = initialState, action) {
         loading: false
       };
     case GET_POST:
+    case EDIT_POST:
       return {
         ...state,
         currentPost: { ...action.payload },
@@ -49,7 +51,7 @@ export default function(state = initialState, action) {
     case LIKE_POST:
       return {
         ...state,
-        currentPost: { ...action.payload },
+        currentPost: { ...state.currentPost, ...action.payload },
         loading: false
       };
     default:

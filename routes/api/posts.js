@@ -42,6 +42,28 @@ router.delete("/:id", (req, res) => {
     .catch(err => res.statusCode(404).json({ success: false }));
 });
 
+// @route PATCH api/posts/:id
+// Edit Post
+// @access Private
+router.patch("/", (req, res) => {
+  const { title, description, id } = req.body;
+
+  // Post.findById(id).then(post =>
+  //   post.updateOne({ title, description }).then( => res.json(post))
+  // );
+  Post.findOneAndUpdate(
+    { _id: id },
+    { $set: { title, description } },
+    { new: true },
+    (err, doc) => {
+      if (err) {
+        return res.statusCode(404).json({ success: false });
+      }
+
+      return res.json(doc);
+    }
+  );
+});
 // @route POST api/posts/like/:id
 // LIKE POST
 // @access Private
