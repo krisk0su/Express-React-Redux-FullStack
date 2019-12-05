@@ -6,11 +6,20 @@ import {
   GET_CREATOR,
   LIKE_POST,
   DELETE_POST,
-  EDIT_POST
+  EDIT_POST,
+  CREATE_POST
 } from "../actions/types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
 
+export const createPost = post => dispatch => {
+  axios.post("/api/posts/", post).then(res =>
+    dispatch({
+      type: CREATE_POST,
+      payload: res.data
+    })
+  );
+};
 export const getPosts = () => dispatch => {
   axios
     .get("/api/posts")
@@ -42,28 +51,32 @@ export const getPost = id => dispatch => {
         type: GET_POST,
         payload: res.data
       })
-    ) //getting ceator of the post using post.creator
-    .then(res =>
-      axios.get(`/api/users/${res.payload.creator}`).then(ress =>
-        dispatch({
-          type: GET_CREATOR,
-          payload: ress.data
-        })
-      )
     )
+    .then(res => getCreator(res.payload, dispatch))
     .catch(err =>
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-
-export const editPost = post => (dispatch, getState) => {
-  axios.patch("/api/posts", post).then(res =>
+export const editPost = post => dispatch => {
+  axios
+    .patch("/api/posts", post)
+    .then(res =>
+      dispatch({
+        type: EDIT_POST,
+        payload: res.data
+      })
+    )
+    .then(res => getCreator(res.payload, dispatch));
+};
+const getCreator = ({ creator }, dispatch) => {
+  axios.get(`/api/users/${creator}`).then(res =>
     dispatch({
-      type: EDIT_POST,
+      type: GET_CREATOR,
       payload: res.data
     })
   );
 };
+
 export const likePost = post => (dispatch, getState) => {
   axios
     .post("/api/posts/like", post)

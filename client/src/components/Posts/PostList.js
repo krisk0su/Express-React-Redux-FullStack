@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CreatePostModal from "./CreatePostModal";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getPosts, setPostToNull } from "../../actions/postAction";
@@ -47,6 +48,7 @@ class PostList extends Component {
   render() {
     return (
       <Container>
+        <CreatePostModal />
         <Row>{this.renderPosts()}</Row>
       </Container>
     );
@@ -56,4 +58,7 @@ class PostList extends Component {
 const mapsStateToProps = state => ({
   post: state.post
 });
-export default connect(mapsStateToProps, { getPosts, setPostToNull })(PostList);
+export default connect(mapsStateToProps, {
+  getPosts,
+  setPostToNull
+})(PostList);

@@ -10,19 +10,14 @@ import {
   Input
 } from "reactstrap";
 import { connect } from "react-redux";
-import { editPost } from "../../actions/postAction";
+import { createPost } from "../../actions/postAction";
 
-class EditPostModal extends Component {
+class CreatePostModal extends Component {
   state = {
     modal: false,
     title: "",
     description: ""
   };
-  componentDidMount() {
-    const { title, description } = this.props.currentPost;
-
-    this.setState({ title, description });
-  }
 
   toggle = () => {
     this.setState({
@@ -34,12 +29,12 @@ class EditPostModal extends Component {
     e.preventDefault();
 
     const newPost = {
-      id: this.props.currentPost._id,
       title: this.state.title,
-      description: this.state.description
+      description: this.state.description,
+      creator: this.props.user._id
     };
 
-    this.props.editPost(newPost);
+    this.props.createPost(newPost);
     this.toggle();
   };
   onChange = e => {
@@ -54,14 +49,12 @@ class EditPostModal extends Component {
             style={{ marginBottom: "2rem" }}
             onClick={this.toggle}
           >
-            Edit Post
+            Create Post
           </Button>
-        ) : (
-          <h4 className="mb-3 ml-4">Please Login To Manage Items</h4>
-        )}
+        ) : null}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Edit Post</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Create Post</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
@@ -84,7 +77,7 @@ class EditPostModal extends Component {
                   onChange={this.onChange}
                 />
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
-                  Edit Post
+                  Create post
                 </Button>
               </FormGroup>
             </Form>
@@ -97,7 +90,7 @@ class EditPostModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  currentPost: state.post.currentPost
+  user: state.auth.user
 });
 
-export default connect(mapStateToProps, { editPost })(EditPostModal);
+export default connect(mapStateToProps, { createPost })(CreatePostModal);

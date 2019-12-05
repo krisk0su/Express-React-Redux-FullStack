@@ -5,7 +5,8 @@ import {
   GET_CREATOR,
   LIKE_POST,
   DELETE_POST,
-  EDIT_POST
+  EDIT_POST,
+  CREATE_POST
 } from "../actions/types";
 
 const initialState = {
@@ -20,6 +21,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: action.payload,
+        loading: false
+      };
+    case CREATE_POST:
+      return {
+        ...state,
+        posts: [...state.posts, action.payload],
         loading: false
       };
     case GET_POST:

@@ -62,9 +62,6 @@ class PostDetails extends Component {
       }
     });
   };
-  editPost = () => {
-    console.log("editing");
-  };
   renderLike = username => {
     const { user } = this.props.auth;
     if (user && user.username === username) {
