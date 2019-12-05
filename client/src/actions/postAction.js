@@ -25,16 +25,14 @@ export const getPosts = () => dispatch => {
     );
 };
 //sending history object from component and firing it after dispatching the delete_post reducer
-export const deletePost = (id, history) => dispatch => {
-  axios
-    .delete(`/api/posts/${id}`)
-    .then(res =>
-      dispatch({
-        type: DELETE_POST,
-        payload: id
-      })
-    )
-    .then(res => history.push("/api/posts"));
+export const deletePost = (id, cb) => dispatch => {
+  axios.delete(`/api/posts/${id}`).then(res => {
+    dispatch({
+      type: DELETE_POST,
+      payload: id
+    });
+    cb({ success: true });
+  });
 };
 export const getPost = id => dispatch => {
   axios

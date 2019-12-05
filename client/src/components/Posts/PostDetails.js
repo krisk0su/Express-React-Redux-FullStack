@@ -56,7 +56,11 @@ class PostDetails extends Component {
   };
   deletePost = () => {
     const { _id } = this.props.currentPost;
-    this.props.deletePost(_id, this.props.history);
+    this.props.deletePost(_id, cb => {
+      if (cb.success) {
+        this.props.history.push("/api/posts/");
+      }
+    });
   };
   editPost = () => {
     console.log("editing");
