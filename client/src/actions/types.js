@@ -22,3 +22,5 @@ export const LIKE_POST = "LIKE_POST";
 export const DELETE_POST = "DELETE_POST";
 export const EDIT_POST = "EDIT_POST";
 export const CREATE_POST = "CREATE_POST";
+export const GET_FILTERED_POSTS = "GET_FILTERED_POSTS";
+export const REMOVE_FILTERED_POSTS = "REMOVE_FILTERED_POSTS";

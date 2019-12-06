@@ -6,12 +6,16 @@ import {
   LIKE_POST,
   DELETE_POST,
   EDIT_POST,
-  CREATE_POST
+  CREATE_POST,
+  GET_FILTERED_POSTS,
+  REMOVE_FILTERED_POSTS
 } from "../actions/types";
 
 const initialState = {
   posts: [],
+  filteredPosts: [],
   currentPost: {},
+  searchActivated: false,
   loading: false
 };
 
@@ -34,6 +38,20 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentPost: { ...action.payload },
+        loading: false
+      };
+    case GET_FILTERED_POSTS:
+      return {
+        ...state,
+        filteredPosts: [...action.payload.filteredPosts],
+        searchActivated: action.payload.searchActivated,
+        loading: false
+      };
+    case REMOVE_FILTERED_POSTS:
+      return {
+        ...state,
+        filteredPosts: [],
+        searchActivated: false,
         loading: false
       };
     case DELETE_POST: {

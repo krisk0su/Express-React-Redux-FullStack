@@ -7,7 +7,9 @@ import {
   LIKE_POST,
   DELETE_POST,
   EDIT_POST,
-  CREATE_POST
+  CREATE_POST,
+  GET_FILTERED_POSTS,
+  REMOVE_FILTERED_POSTS
 } from "../actions/types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
@@ -19,6 +21,17 @@ export const createPost = post => dispatch => {
       payload: res.data
     })
   );
+};
+export const getFilteredPosts = data => dispatch => {
+  dispatch({
+    type: GET_FILTERED_POSTS,
+    payload: data
+  });
+};
+export const removeFilteredPosts = () => dispatch => {
+  dispatch({
+    type: REMOVE_FILTERED_POSTS
+  });
 };
 export const getPosts = () => dispatch => {
   axios

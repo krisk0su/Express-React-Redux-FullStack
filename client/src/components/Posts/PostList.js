@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import CreatePostModal from "./CreatePostModal";
+import SearchPost from "./SearchPost";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getPosts, setPostToNull } from "../../actions/postAction";
@@ -25,8 +26,8 @@ class PostList extends Component {
     this.props.setPostToNull();
     this.props.getPosts();
   }
-  renderPosts() {
-    return this.props.post.posts.map(pst => {
+  choosePosts(name) {
+    return this.props.post[name].map(pst => {
       const { title, description, _id } = pst;
 
       return (
@@ -44,10 +45,22 @@ class PostList extends Component {
       );
     });
   }
+  renderPosts() {
+    const filteredPosts = "filteredPosts";
+    const posts = "posts";
+    const { searchActivated } = this.props.post;
+
+    if (searchActivated) {
+      return this.choosePosts(filteredPosts);
+    } else {
+      return this.choosePosts(posts);
+    }
+  }
 
   render() {
     return (
       <Container>
+        <SearchPost />
         <CreatePostModal />
         <Row>{this.renderPosts()}</Row>
       </Container>
