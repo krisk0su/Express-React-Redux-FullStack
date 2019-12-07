@@ -64,7 +64,7 @@ router.patch("/", (req, res) => {
     }
   );
 });
-// @route POST api/posts/like/:id
+// @route POST api/posts/like
 // LIKE POST
 // @access Private
 router.post("/like/", (req, res) => {
@@ -85,6 +85,23 @@ router.post("/like/", (req, res) => {
       res.statusCode = 404;
       res.json({ msg: err.message });
     }
+  });
+});
+// @route POST api/posts/comment/
+// Comment POST
+// @access Private
+router.post("/comment/", (req, res) => {
+  const { commentatorId, commentatorName, comment, postId } = req.body;
+
+  Post.findById(postId).then(post => {
+    const newComment = {
+      commentatorId,
+      commentatorName,
+      comment
+    };
+
+    post.comments.push(newComment);
+    post.save().then(post => res.json(post));
   });
 });
 module.exports = router;

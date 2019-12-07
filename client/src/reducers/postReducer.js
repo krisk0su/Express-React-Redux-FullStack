@@ -8,7 +8,8 @@ import {
   EDIT_POST,
   CREATE_POST,
   GET_FILTERED_POSTS,
-  REMOVE_FILTERED_POSTS
+  REMOVE_FILTERED_POSTS,
+  COMMENT_POST
 } from "../actions/types";
 
 const initialState = {
@@ -77,6 +78,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         currentPost: { ...state.currentPost, ...action.payload },
+        loading: false
+      };
+    case COMMENT_POST:
+      return {
+        ...state,
+        currentPost: { ...state.currentPost, comments: [...action.payload] },
         loading: false
       };
     default:

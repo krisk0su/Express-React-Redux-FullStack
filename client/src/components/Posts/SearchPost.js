@@ -57,9 +57,6 @@ class SearchPost extends React.Component {
               placeholder="Search for post"
               onChange={this.onChange}
             />
-            <Button color="dark" style={{ marginTop: "2rem" }} block>
-              Search
-            </Button>
           </FormGroup>
         </Form>
       </div>

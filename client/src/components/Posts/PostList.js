@@ -34,8 +34,8 @@ class PostList extends Component {
         <Col sm="6" className="mb-5" key={_id}>
           <Card>
             <CardTitle className="text-center">{title}</CardTitle>
-            <CardText className="text-left">
-              {description.substring(1, 120) + "..."}
+            <CardText className="pl-2">
+              {description.substring(0, 120) + "..."}
             </CardText>
             <Button tag={Link} to={`/api/posts/${_id}`}>
               Read More

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   Button,
   Modal,
@@ -47,13 +47,9 @@ class EditPostModal extends Component {
   };
   render() {
     return (
-      <div>
+      <Fragment>
         {this.props.isAuthenticated ? (
-          <Button
-            color="dark"
-            style={{ marginBottom: "2rem" }}
-            onClick={this.toggle}
-          >
+          <Button color="dark" className="m-3" onClick={this.toggle}>
             Edit Post
           </Button>
         ) : (
@@ -90,7 +86,7 @@ class EditPostModal extends Component {
             </Form>
           </ModalBody>
         </Modal>
-      </div>
+      </Fragment>
     );
   }
 }

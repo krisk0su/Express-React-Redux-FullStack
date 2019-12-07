@@ -9,7 +9,8 @@ import {
   EDIT_POST,
   CREATE_POST,
   GET_FILTERED_POSTS,
-  REMOVE_FILTERED_POSTS
+  REMOVE_FILTERED_POSTS,
+  COMMENT_POST
 } from "../actions/types";
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
@@ -104,6 +105,15 @@ export const likePost = post => (dispatch, getState) => {
         returnErrors(err.response.data, err.response.status, "LIKE_FAILED")
       )
     );
+};
+//Posting Comment
+export const postComment = comment => dispatch => {
+  axios.post("/api/posts/comment", comment).then(res =>
+    dispatch({
+      type: COMMENT_POST,
+      payload: res.data.comments
+    })
+  );
 };
 
 export const setPostToNull = () => dispatch => {

@@ -27,7 +27,17 @@ const PostSchema = new Schema({
   likes: {
     type: mongoose.Schema.Types.Number,
     default: 0
-  }
+  },
+  comments: [
+    {
+      commentatorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      commentatorName: { type: mongoose.Schema.Types.String },
+      comment: {
+        type: mongoose.Schema.Types.String,
+        required: true
+      }
+    }
+  ]
 });
 
 //   var storySchema = Schema({

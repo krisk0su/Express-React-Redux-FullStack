@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPost, likePost, deletePost } from "../../actions/postAction";
+import CommentList from "./CommentList";
+import {
+  getPost,
+  likePost,
+  deletePost,
+  postComment
+} from "../../actions/postAction";
 import { clearErrors } from "../../actions/errorAction";
-import { Button, ButtonGroup, Alert } from "reactstrap";
+import { Button, Alert, Form, FormGroup, Label, Input } from "reactstrap";
 import EditPostModal from "./EditPostModal";
 
 class PostDetails extends Component {
@@ -11,7 +17,8 @@ class PostDetails extends Component {
     this.state = {
       id: this.props.match.params.id,
       likedCss: "m-3 button button-like",
-      msg: null
+      msg: null,
+      comment: ""
     };
   }
   componentDidMount() {
@@ -45,11 +52,9 @@ class PostDetails extends Component {
       //for some reason sometimes returns _id sometimes id ://
       if (user.id === creatorId || user._id === creatorId) {
         return (
-          <div>
-            <Button onClick={this.deletePost} className="m-2" color="danger">
-              Delete
-            </Button>
-          </div>
+          <Button onClick={this.deletePost} className="m-3" color="danger">
+            Delete
+          </Button>
         );
       }
     }
@@ -62,11 +67,31 @@ class PostDetails extends Component {
       }
     });
   };
-  renderLike = username => {
+  renderEdit = username => {
     const { user } = this.props.auth;
     if (user && user.username === username) {
       return <EditPostModal />;
     }
+  };
+  onCommentSubmit = e => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    const postId = this.props.currentPost._id;
+    const commentatorId = this.props.auth.user._id;
+    const commentatorName = this.props.auth.user.username;
+
+    const newComment = {
+      comment,
+      postId,
+      commentatorId,
+      commentatorName
+    };
+
+    this.props.postComment(newComment);
+    this.setState({ comment: "" });
+  };
+  onCommentChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
   render() {
     const { title, description, username, likes } = this.props.currentPost;
@@ -85,8 +110,22 @@ class PostDetails extends Component {
             <span>Like</span>
           </button>
         ) : null}
-        {this.renderLike(username)}
+        {this.renderEdit(username)}
         {this.renderDelete()}
+        <CommentList />
+        <Form onSubmit={this.onCommentSubmit}>
+          <FormGroup>
+            <Label for="comment-area">Comment Area</Label>
+            <Input
+              type="textarea"
+              name="comment"
+              id="comment"
+              value={this.state.comment}
+              onChange={this.onCommentChange}
+            />
+            <Button>Submit Comment</Button>
+          </FormGroup>
+        </Form>
       </div>
     );
   }
@@ -101,5 +140,6 @@ export default connect(mapsStateToProps, {
   getPost,
   likePost,
   deletePost,
+  postComment,
   clearErrors
 })(PostDetails);
