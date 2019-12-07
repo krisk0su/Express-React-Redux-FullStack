@@ -5,10 +5,12 @@ import {
   ListGroupItemText
 } from "reactstrap";
 
-const Comment = ({ comment, commentatorName }) => {
+const Comment = ({ comment, name }) => {
   return (
-    <ListGroupItem>
-      <ListGroupItemHeading>{commentatorName}</ListGroupItemHeading>
+    <ListGroupItem className="m-2">
+      <ListGroupItemHeading className="text-center">
+        Comment Author: {name}
+      </ListGroupItemHeading>
       <ListGroupItemText>{comment}</ListGroupItemText>
     </ListGroupItem>
   );

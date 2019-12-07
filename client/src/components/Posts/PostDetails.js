@@ -99,33 +99,37 @@ class PostDetails extends Component {
 
     return (
       <div>
-        {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
         <h1>Title: {title}</h1>
         <p>{description}</p>
         <h3>Author: {username}</h3>
         <h2>Likes: {likes}</h2>
-        {isAuthenticated ? (
+        {this.state.msg && <Alert color="danger">{this.state.msg}</Alert>}
+        {isAuthenticated && (
           <button onClick={this.PostLike} className={this.state.likedCss}>
             <i className="fa fa-heart"></i>
             <span>Like</span>
           </button>
-        ) : null}
+        )}
         {this.renderEdit(username)}
         {this.renderDelete()}
         <CommentList />
-        <Form onSubmit={this.onCommentSubmit}>
-          <FormGroup>
-            <Label for="comment-area">Comment Area</Label>
-            <Input
-              type="textarea"
-              name="comment"
-              id="comment"
-              value={this.state.comment}
-              onChange={this.onCommentChange}
-            />
-            <Button>Submit Comment</Button>
-          </FormGroup>
-        </Form>
+        {isAuthenticated && (
+          <Form onSubmit={this.onCommentSubmit} className="m-2">
+            <FormGroup>
+              <Label for="comment-area">Comment Area</Label>
+              <Input
+                type="textarea"
+                name="comment"
+                id="comment"
+                value={this.state.comment}
+                onChange={this.onCommentChange}
+              />
+              <Button color="success" className="m-1">
+                Submit Comment
+              </Button>
+            </FormGroup>
+          </Form>
+        )}
       </div>
     );
   }

@@ -8,6 +8,7 @@ yarn-error.log*
 #ignore node modules
 .gitignore
 node_modules
+config/
 
 # Runtime data
 pids
