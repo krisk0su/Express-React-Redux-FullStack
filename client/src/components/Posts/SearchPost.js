@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, Label, Input, Button, FormGroup } from "reactstrap";
+import { Form, Label, Input, FormGroup } from "reactstrap";
 import {
   getFilteredPosts,
   removeFilteredPosts

@@ -25,3 +25,7 @@ export const CREATE_POST = "CREATE_POST";
 export const GET_FILTERED_POSTS = "GET_FILTERED_POSTS";
 export const REMOVE_FILTERED_POSTS = "REMOVE_FILTERED_POSTS";
 export const COMMENT_POST = "COMMENT_POST";
+
+//Youtube getSongs
+export const GET_SONGS = "GET_SONGS";
+export const SELECT_SONG = "SELECT_SONG";

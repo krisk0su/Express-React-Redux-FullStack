@@ -72,6 +72,9 @@ class AppNavar extends Component {
               <NavLink tag={Link} to="/api/items">
                 Items
               </NavLink>
+              <NavLink tag={Link} to="/api/youtube">
+                Youtube
+              </NavLink>
             </Nav>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto">
