@@ -61,7 +61,7 @@ class AppNavar extends Component {
       <div>
         <Navbar color="dark" dark expand="sm mb-5">
           <Container>
-            <NavbarBrand href="/">ShoppingList</NavbarBrand>
+            <NavbarBrand href="/">Diploma WebSite</NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             <Nav>
               <NavItem>

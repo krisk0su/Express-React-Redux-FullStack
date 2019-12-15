@@ -82,9 +82,7 @@ class RegisterModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Register</ModalHeader>
           <ModalBody>
-            {this.state.msg ? (
-              <Alert color="danger">{this.state.msg}</Alert>
-            ) : null}
+            {this.state.msg && <Alert color="danger">{this.state.msg}</Alert>}
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="username">Username</Label>

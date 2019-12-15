@@ -7,21 +7,36 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Alert
 } from "reactstrap";
 import { connect } from "react-redux";
 import { addItem } from "../actions/itemAction";
+import { clearErrors } from "../actions/errorAction";
 import PropTypes from "prop-types";
 
 class ItemModal extends Component {
   state = {
     modal: false,
-    name: ""
+    name: "",
+    price: 0,
+    msg: null
   };
   static propTypes = {
     isAuthenticated: PropTypes.bool
   };
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+    if (error != prevProps.error) {
+      if (error.id && error.id === "ITEM_FAILED") {
+        this.setState({ msg: error.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
+  }
   toggle = () => {
+    this.props.clearErrors();
     this.setState({
       modal: !this.state.modal
     });
@@ -29,12 +44,20 @@ class ItemModal extends Component {
   onSubmit = e => {
     e.preventDefault();
 
+    const { name, price } = this.state;
+    const { _id: creator, username } = this.props.user;
     const newItem = {
-      name: this.state.name
+      name,
+      price,
+      username,
+      creator
     };
 
-    this.props.addItem(newItem);
-    this.toggle();
+    this.props.addItem(newItem, cb => {
+      if (cb.success) {
+        this.toggle();
+      }
+    });
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -42,7 +65,7 @@ class ItemModal extends Component {
   render() {
     return (
       <div>
-        {this.props.isAuthenticated ? (
+        {this.props.isAuthenticated && (
           <Button
             color="dark"
             style={{ marginBottom: "2rem" }}
@@ -50,21 +73,30 @@ class ItemModal extends Component {
           >
             Add Item
           </Button>
-        ) : (
-          <h4 className="mb-3 ml-4">Please Login To Manage Items</h4>
         )}
 
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Add To Shopping List</ModalHeader>
           <ModalBody>
+            {this.state.msg && <Alert color="danger">{this.state.msg}</Alert>}
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
-                <Label for="item">Item</Label>
+                <Label for="name">Item name</Label>
                 <Input
+                  className="m-2"
                   type="text"
                   name="name"
-                  id="item"
-                  placeholder="Add shopping item"
+                  id="name"
+                  placeholder="Enter item Name"
+                  onChange={this.onChange}
+                />
+                <Label for="name">Item price</Label>
+                <Input
+                  className="m-2"
+                  type="number"
+                  name="price"
+                  id="price"
+                  placeholder="Enter item Price"
                   onChange={this.onChange}
                 />
                 <Button color="dark" style={{ marginTop: "2rem" }} block>
@@ -81,6 +113,8 @@ class ItemModal extends Component {
 
 const mapStateToProps = state => ({
   item: state.item,
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error,
+  user: state.auth.user
 });
-export default connect(mapStateToProps, { addItem })(ItemModal);
+export default connect(mapStateToProps, { addItem, clearErrors })(ItemModal);

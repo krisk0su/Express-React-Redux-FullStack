@@ -17,8 +17,23 @@ router.get("/", (req, res) => {
 // Create ITEM
 // @access Private
 router.post("/", authWare, (req, res) => {
+  const { name, price, username, creator } = req.body;
+  if (!name || !price) {
+    return res.status(400).json({ msg: "Enter all fields!" });
+  }
+  if (name.length < 3) {
+    return res
+      .status(400)
+      .json({ msg: "Item name must be more than 3 letters" });
+  }
+  if (price < 1) {
+    return res.status(400).json({ msg: "Item price must be at least 1 euro." });
+  }
   const newItem = new Item({
-    name: req.body.name
+    name,
+    price,
+    username,
+    creator
   });
 
   newItem.save().then(item => res.json(item));

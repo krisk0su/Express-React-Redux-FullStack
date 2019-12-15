@@ -4,6 +4,7 @@ import ShoppingList from "./components/ShoppingList";
 import PostList from "./components/Posts/PostList";
 import PostDetails from "./components/Posts/PostDetails";
 import Youtube from "./components/Youtube/Youtube.js";
+import Index from "./components/Index";
 import { Container } from "reactstrap";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -30,6 +31,7 @@ class App extends Component {
                 <Route path="/api/posts/:id" component={PostDetails} />
                 <Route path="/api/items" exact component={ShoppingList} />
                 <Route path="/api/youtube" exact component={Youtube} />
+                <Route path="/" component={Index}></Route>
               </Switch>
             </Container>
           </div>

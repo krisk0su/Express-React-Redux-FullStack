@@ -18,6 +18,22 @@ class ShoppingList extends Component {
   deleteEntity = id => {
     this.props.deleteItem(id);
   };
+  renderAuth = (id, creator) => {
+    if (this.props.user) {
+      if (this.props.user._id === creator) {
+        return (
+          <Button
+            className="remove-btn"
+            color="danger"
+            size="sm"
+            onClick={this.deleteEntity.bind(this, id)}
+          >
+            Delete Item &times;
+          </Button>
+        );
+      }
+    }
+  };
   render() {
     const { items } = this.props.item;
     return (
@@ -25,21 +41,13 @@ class ShoppingList extends Component {
         <ItemModal />
         <ListGroup>
           <TransitionGroup className="shopping-list">
-            {items.map(({ _id, name }) => (
+            {items.map(({ _id, name, price, username, creator }) => (
               <CSSTransition key={_id} timeout={500} classNames="fade">
-                <ListGroupItem>
-                  {this.props.isAuthenticated ? (
-                    <Button
-                      className="remove-btn"
-                      color="danger"
-                      size="sm"
-                      onClick={this.deleteEntity.bind(this, _id)}
-                    >
-                      &times;
-                    </Button>
-                  ) : null}
-
-                  {name}
+                <ListGroupItem className="m-2">
+                  {this.renderAuth(_id, creator)}
+                  <h2>Item name: - {name}</h2>
+                  <h2>Item Price: - {price}$</h2>
+                  <h2>Seller Name: - {username}</h2>
                 </ListGroupItem>
               </CSSTransition>
             ))}
@@ -52,6 +60,6 @@ class ShoppingList extends Component {
 
 const mapStateToProps = state => ({
   item: state.item,
-  isAuthenticated: state.auth.isAuthenticated
+  user: state.auth.user
 });
 export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList);
