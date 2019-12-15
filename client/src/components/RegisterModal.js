@@ -37,7 +37,7 @@ class RegisterModal extends Component {
     if (error !== prevProps.error) {
       //check for register error
       if (error.id === "REGISTER_FAIL") {
-        this.setState({ msg: error.msg.msg });
+        this.setState({ msg: error.msg });
       } else {
         this.setState({ msg: null });
       }

@@ -29,3 +29,4 @@ export const COMMENT_POST = "COMMENT_POST";
 //Youtube getSongs
 export const GET_SONGS = "GET_SONGS";
 export const SELECT_SONG = "SELECT_SONG";
+export const SET_SONGS_NULL = "SET_SONGS_NULL";

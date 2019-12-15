@@ -3,8 +3,12 @@ import SearchBar from "./SearchBar";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
 import { connect } from "react-redux";
+import { setSongsNull } from "../../actions/youtubeAction";
 import "./VideoItem.css";
 class Youtube extends Component {
+  componentDidMount() {
+    this.props.setSongsNull();
+  }
   render() {
     const { video } = this.props;
     return (
@@ -25,4 +29,4 @@ class Youtube extends Component {
 const mapsStateToProps = state => ({
   video: state.youtube.currentSong
 });
-export default connect(mapsStateToProps, null)(Youtube);
+export default connect(mapsStateToProps, { setSongsNull })(Youtube);

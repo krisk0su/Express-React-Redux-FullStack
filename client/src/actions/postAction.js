@@ -15,13 +15,20 @@ import {
 import { tokenConfig } from "./authAction";
 import { returnErrors } from "./errorAction";
 
-export const createPost = post => dispatch => {
-  axios.post("/api/posts/", post).then(res =>
-    dispatch({
-      type: CREATE_POST,
-      payload: res.data
-    })
-  );
+export const createPost = post => (dispatch, getState) => {
+  axios
+    .post("/api/posts/", post, tokenConfig(getState))
+    .then(res =>
+      dispatch({
+        type: CREATE_POST,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "CREATE_FAILED")
+      )
+    );
 };
 export const getFilteredPosts = data => dispatch => {
   dispatch({
@@ -47,9 +54,9 @@ export const getPosts = () => dispatch => {
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-//sending history object from component and firing it after dispatching the delete_post reducer
-export const deletePost = (id, cb) => dispatch => {
-  axios.delete(`/api/posts/${id}`).then(res => {
+
+export const deletePost = (id, cb) => (dispatch, getState) => {
+  axios.delete(`/api/posts/${id}`, tokenConfig(getState)).then(res => {
     dispatch({
       type: DELETE_POST,
       payload: id
@@ -71,16 +78,21 @@ export const getPost = id => dispatch => {
       dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-export const editPost = post => dispatch => {
+export const editPost = post => (dispatch, getState) => {
   axios
-    .patch("/api/posts", post)
+    .patch("/api/posts", post, tokenConfig(getState))
     .then(res =>
       dispatch({
         type: EDIT_POST,
         payload: res.data
       })
     )
-    .then(res => getCreator(res.payload, dispatch));
+    .then(res => getCreator(res.payload, dispatch))
+    .catch(err =>
+      dispatch(
+        returnErrors(err.response.data, err.response.status, "EDIT_FAILED")
+      )
+    );
 };
 const getCreator = ({ creator }, dispatch) => {
   axios.get(`/api/users/${creator}`).then(res =>
@@ -93,7 +105,7 @@ const getCreator = ({ creator }, dispatch) => {
 
 export const likePost = post => (dispatch, getState) => {
   axios
-    .post("/api/posts/like", post)
+    .post("/api/posts/like", post, tokenConfig(getState))
     .then(res =>
       dispatch({
         type: LIKE_POST,
@@ -107,8 +119,8 @@ export const likePost = post => (dispatch, getState) => {
     );
 };
 //Posting Comment
-export const postComment = comment => dispatch => {
-  axios.post("/api/posts/comment", comment).then(res =>
+export const postComment = comment => (dispatch, getState) => {
+  axios.post("/api/posts/comment", comment, tokenConfig(getState)).then(res =>
     dispatch({
       type: COMMENT_POST,
       payload: res.data.comments

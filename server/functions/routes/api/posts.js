@@ -23,11 +23,25 @@ router.get("/:id", (req, res) => {
 // @route POST api/posts
 // Create POST
 // @access Private
-router.post("/", (req, res) => {
+router.post("/", authWare, (req, res) => {
+  const { title, description, creator } = req.body;
+  if (!title || !description) {
+    return res.status(400).json({ msg: "Please enter all fields" });
+  }
+  if (title.length < 5) {
+    return res
+      .status(400)
+      .json({ msg: "Title must be more than 5 characters" });
+  }
+  if (description.length < 150) {
+    return res
+      .status(400)
+      .json({ msg: "Description must be more than 150 characters" });
+  }
   const newPost = new Post({
-    title: req.body.title,
-    description: req.body.description,
-    creator: req.body.creator
+    title,
+    description,
+    creator
   });
 
   newPost.save().then(post => res.json(post));
@@ -36,7 +50,7 @@ router.post("/", (req, res) => {
 // @route POST api/posts
 // DELETE POST
 // @access Private
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authWare, (req, res) => {
   Post.findById(req.params.id)
     .then(post => post.remove().then(() => res.json({ success: true })))
     .catch(err => res.statusCode(404).json({ success: false }));
@@ -45,12 +59,25 @@ router.delete("/:id", (req, res) => {
 // @route PATCH api/posts/:id
 // Edit Post
 // @access Private
-router.patch("/", (req, res) => {
+router.patch("/", authWare, (req, res) => {
   const { title, description, id } = req.body;
 
   // Post.findById(id).then(post =>
   //   post.updateOne({ title, description }).then( => res.json(post))
   // );
+  if (!title || !description) {
+    return res.status(400).json({ msg: "Please enter all fields" });
+  }
+  if (title.length < 5) {
+    return res
+      .status(400)
+      .json({ msg: "Title must be more than 5 characters" });
+  }
+  if (description.length < 150) {
+    return res
+      .status(400)
+      .json({ msg: "Description must be more than 150 characters" });
+  }
   Post.findOneAndUpdate(
     { _id: id },
     { $set: { title, description } },
@@ -67,7 +94,7 @@ router.patch("/", (req, res) => {
 // @route POST api/posts/like
 // LIKE POST
 // @access Private
-router.post("/like/", (req, res) => {
+router.post("/like/", authWare, (req, res) => {
   const { postId, userId } = req.body;
 
   Post.findById(postId).then(post => {
@@ -90,7 +117,7 @@ router.post("/like/", (req, res) => {
 // @route POST api/posts/comment/
 // Comment POST
 // @access Private
-router.post("/comment/", (req, res) => {
+router.post("/comment/", authWare, (req, res) => {
   const { commentatorId, commentatorName, comment, postId } = req.body;
 
   Post.findById(postId).then(post => {

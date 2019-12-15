@@ -7,24 +7,38 @@ import {
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  Alert
 } from "reactstrap";
 import { connect } from "react-redux";
 import { editPost } from "../../actions/postAction";
+import { clearErrors } from "../../actions/errorAction";
 
 class EditPostModal extends Component {
   state = {
     modal: false,
     title: "",
-    description: ""
+    description: "",
+    msg: null
   };
   componentDidMount() {
     const { title, description } = this.props.currentPost;
 
     this.setState({ title, description });
   }
+  componentDidUpdate(prevProps) {
+    const { error } = this.props;
+    if (error != prevProps.error) {
+      if (error.id && error.id === "EDIT_FAILED") {
+        this.setState({ msg: error.msg });
+      } else {
+        this.setState({ msg: null });
+      }
+    }
+  }
 
   toggle = () => {
+    this.props.clearErrors();
     this.setState({
       modal: !this.state.modal
     });
@@ -40,7 +54,6 @@ class EditPostModal extends Component {
     };
 
     this.props.editPost(newPost);
-    this.toggle();
   };
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -59,6 +72,7 @@ class EditPostModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Edit Post</ModalHeader>
           <ModalBody>
+            {this.state.msg && <Alert color="danger">{this.state.msg}</Alert>}
             <Form onSubmit={this.onSubmit}>
               <FormGroup>
                 <Label for="title">Title</Label>
@@ -93,7 +107,10 @@ class EditPostModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  currentPost: state.post.currentPost
+  currentPost: state.post.currentPost,
+  error: state.error
 });
 
-export default connect(mapStateToProps, { editPost })(EditPostModal);
+export default connect(mapStateToProps, { editPost, clearErrors })(
+  EditPostModal
+);
