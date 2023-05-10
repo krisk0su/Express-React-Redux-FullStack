@@ -15,6 +15,7 @@ import { loadUser } from "./actions/authAction";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+//kristian
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
